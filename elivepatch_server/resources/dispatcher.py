@@ -84,7 +84,7 @@ class SendLivePatch(Resource):
 
 class GetFiles(Resource):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('KernelVersion', type=str, required=False,
                                    help='No task title provided',
@@ -92,6 +92,7 @@ class GetFiles(Resource):
         self.reqparse.add_argument('UUID', type=str, required=False,
                                    help='No task title provided',
                                    location='headers')
+        self.cmdline_args = kwargs['cmdline_args']
         super(GetFiles, self).__init__()
         pass
 
@@ -157,7 +158,7 @@ class GetFiles(Resource):
         kernel_sources_status = lpatch.get_kernel_sources(args['KernelVersion'])
         if not kernel_sources_status:
             return make_response(jsonify({'message': 'gentoo-sources not available'}), 403)
-        lpatch.build_livepatch('vmlinux')
+        lpatch.build_livepatch('vmlinux', jobs=self.cmdline_args.jobs)
 
         pack = {
            'id': packs['id'] + 1,

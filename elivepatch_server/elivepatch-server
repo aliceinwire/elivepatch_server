@@ -7,7 +7,17 @@
 
 from flask import Flask
 from flask_restful import Api
+import multiprocessing
+import argparse
 from elivepatch_server.resources import AgentInfo, dispatcher
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-j', '--jobs', type=int,
+                        default=multiprocessing.cpu_count())
+
+    return parser.parse_args()
 
 def create_app():
     """
@@ -17,6 +27,8 @@ def create_app():
 
     app = Flask(__name__, static_url_path="")
     api = Api(app)
+
+    cmdline_args = parse_args()
 
     api.add_resource(AgentInfo.AgentAPI, '/elivepatch/api/',
                      endpoint='root')
@@ -32,7 +44,8 @@ def create_app():
 
     # where to receive the config file
     api.add_resource(dispatcher.GetFiles, '/elivepatch/api/v1.0/get_files',
-                     endpoint='config')
+                     endpoint='config',
+                     resource_class_kwargs={'cmdline_args': cmdline_args})
     return app
 
 if __name__ == '__main__':

@@ -19,7 +19,7 @@ class PaTch(object):
 
         self.__kernel_source_dir__ = os.path.join(self.base_dir, 'usr/src/linux/')
 
-    def build_livepatch(self, vmlinux, debug=True):
+    def build_livepatch(self, vmlinux, jobs, debug=True):
         """
         Function for building the livepatch
 
@@ -32,7 +32,7 @@ class PaTch(object):
 
         os.makedirs(kpatch_cachedir)
         if not os.path.isfile(vmlinux_source):
-            self.build_kernel()
+            self.build_kernel(jobs)
 
         bashCommand = ['kpatch-build']
         bashCommand.extend(['-s', self.__kernel_source_dir__])
@@ -85,7 +85,7 @@ class PaTch(object):
             kernel_sources_status = None
         return kernel_sources_status
 
-    def build_kernel(self):
+    def build_kernel(self, jobs):
         kernel_config_path = os.path.join(self.__kernel_source_dir__, '.config')
 
         if 'CONFIG_DEBUG_INFO=y' in open(self.base_config_path).read():
@@ -104,15 +104,7 @@ class PaTch(object):
         # copy the olddefconfig generated config file back,
         # so that we don't trigger a config restart when kpatch-build runs
         shutil.copyfile(kernel_config_path, self.base_config_path)
-        # Getting enviroment variable
-        try:
-            jobs = os.environ['JOBS']
-        except:
-            jobs = None
-        if jobs:
-            _command(['make', jobs], self.__kernel_source_dir__)
-        else:
-            _command(['make'], self.__kernel_source_dir__)
+        _command(['make', '-j{}'.format(jobs)], self.__kernel_source_dir__)
         _command(['make', 'modules'], self.__kernel_source_dir__)
 
 
