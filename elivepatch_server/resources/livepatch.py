@@ -37,6 +37,7 @@ class PaTch(object):
         bashCommand = ['kpatch-build']
         bashCommand.extend(['-s', self.__kernel_source_dir__])
         bashCommand.extend(['-v', vmlinux_source])
+        bashCommand.extend(['-j', str(jobs)])
         bashCommand.extend(['-c', 'config'])
         bashCommand.extend(['main.patch'])
         bashCommand.extend(['--skip-gcc-check'])
