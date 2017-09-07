@@ -34,13 +34,13 @@ class PaTch(object):
         if not os.path.isfile(vmlinux_source):
             self.build_kernel(jobs)
 
-        bashCommand = ['kpatch-build']
-        bashCommand.extend(['-s', self.__kernel_source_dir__])
-        bashCommand.extend(['-v', vmlinux_source])
-        bashCommand.extend(['-j', str(jobs)])
-        bashCommand.extend(['-c', 'config'])
-        bashCommand.extend(['main.patch'])
-        bashCommand.extend(['--skip-gcc-check'])
+        bashCommand = ['kpatch-build',
+                       '-s', self.__kernel_source_dir__,
+                       '-v', vmlinux_source,
+                       '-j', str(jobs),
+                       '-c', 'config',
+                       '--skip-gcc-check',
+                       'main.patch']
         if debug:
             bashCommand.extend(['--skip-cleanup'])
             bashCommand.extend(['--debug'])
