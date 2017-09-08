@@ -105,7 +105,7 @@ class PaTch(object):
         # copy the olddefconfig generated config file back,
         # so that we don't trigger a config restart when kpatch-build runs
         shutil.copyfile(kernel_config_path, self.base_config_path)
-        _command(['make', '-j{}'.format(jobs)], self.__kernel_source_dir__)
+        _command(['make', '-j', str(jobs)], self.__kernel_source_dir__)
         _command(['make', 'modules'], self.__kernel_source_dir__)
 
 
