@@ -11,6 +11,7 @@ import multiprocessing
 import argparse
 from elivepatch_server.resources import AgentInfo, dispatcher
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -30,6 +31,7 @@ def parse_args():
                         default=False)
 
     return parser.parse_args()
+
 
 def create_app(cmdline_args):
     """
