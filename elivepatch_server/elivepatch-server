@@ -17,9 +17,21 @@ def parse_args():
     parser.add_argument('-j', '--jobs', type=int,
                         default=multiprocessing.cpu_count())
 
+    parser.add_argument('-H', '--host', type=str,
+                        default='0.0.0.0')
+
+    parser.add_argument('-P', '--port', type=int,
+                        default='5000')
+
+    parser.add_argument('-T', '--threaded', type=bool,
+                        default=True)
+
+    parser.add_argument('-d', '--debug', type=bool,
+                        default=False)
+
     return parser.parse_args()
 
-def create_app():
+def create_app(cmdline_args):
     """
     Create server application
     RESTful api version 1.0
@@ -28,7 +40,6 @@ def create_app():
     app = Flask(__name__, static_url_path="")
     api = Api(app)
 
-    cmdline_args = parse_args()
 
     api.add_resource(AgentInfo.AgentAPI, '/elivepatch/api/',
                      endpoint='root')
@@ -49,5 +60,8 @@ def create_app():
     return app
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True, host='0.0.0.0', threaded=True)
+    cmdline_args = parse_args()
+    app = create_app(cmdline_args)
+    app.run(debug=cmdline_args.debug, host=cmdline_args.host, port=cmdline_args.port,
+            threaded=cmdline_args.threaded)
+
