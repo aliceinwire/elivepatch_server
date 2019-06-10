@@ -21,3 +21,12 @@ $ python elivepatch-server
 ```
 
 Will run the server using [werkzeug](https://palletsprojects.com/p/werkzeug/)
+
+## API
+
+- Endpoint root: /elivepatch/api/
+- agent: /elivepatch/api/v1.0/agent
+- send_livepatch: /elivepatch/api/v1.0/send_livepatch
+- GetFiles: /elivepatch/api/v1.0/get_files
+
+More information on the REST API is [here](docs/API.md)
