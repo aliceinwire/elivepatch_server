@@ -27,8 +27,10 @@ setup(
     author='Alice Ferrazzi',
     author_email='alice.ferrazzi@gmail.com',
     license='GNU GPLv2+',
-    packages=['elivepatch_server/'],
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    install_requires=["flask>=1", "flask_restful", "flask_testing"],
     entry_points = {
-        'console_scripts': ['elivepatch_server=elivepatch_server:run']
+        'console_scripts': ['elivepatch-server=elivepatch_server:run']
     }
 )

@@ -1,3 +1,3 @@
-from elivepatch_server import run
+from src.elivepatch_server import run
 
 run()
